@@ -1,0 +1,4 @@
+__pycache__/
+a.py
+*.txt
+*.csv
