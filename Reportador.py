@@ -22,3 +22,13 @@ class Reportador:
             writer = csv.writer(csv_file)
             writer.writerows(datos)    
         print("Reporte de tokens generado!")
+    
+    def tks(self, datos, nombre):
+        encabezado = ["Token","Lexema","Posicion"]
+        datos.insert(0,encabezado)
+        ruta = 'TKS '+ nombre +'.csv'
+        csv_file = open(ruta, 'w', newline='', encoding="utf-8-sig")
+        with csv_file:
+            writer = csv.writer(csv_file)
+            writer.writerows(datos)    
+        print("Reporte de tokens generado!")

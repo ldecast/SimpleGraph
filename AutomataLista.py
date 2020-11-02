@@ -3,42 +3,9 @@ import Graficadora
 
 class AutomataLista:
 
-    def token(self, lexema):
-        a = lexema.lower()
-        if 'lista' == a:
-            return 'lista'
-        elif 'nodo' == a:
-            return 'nodo'
-        elif 'nodos' in a:
-            return 'nombre'
-        elif 'peso' in a:
-            return 'peso'
-        elif 'inicio' in a:
-            return 'inicio'
-        elif 'fin' in a:
-            return 'fin'
-        elif 'estado' in a:
-            return 'estado'
-        elif 'color' in a:
-            return 'color'
-
-    
-    def get_lexema(self, lexema):
-        if lexema.count('>') > 1:
-            a = [idx for idx, x in enumerate(lexema) if x=='<']
-            b = [idx for idx, x in enumerate(lexema) if x=='>']
-            c = lexema[a.pop()+1:b.pop()]
-            return c
-        elif lexema.count('>') == 1:
-            a = lexema[lexema.index('<')+1:lexema.index('>')]
-            return a
-
-
     def aceptar(self, entrada, opcion):
-        
         try:
             file = open(entrada, 'r', encoding= "utf-8-sig") 
-            aux_lex = []
             fila = 0
             columna = 0
             aux_col = 0
@@ -316,7 +283,7 @@ class AutomataLista:
                     elif estado == 17:
                         if caracter == ")":
                             tokens += 1
-                            token_lista.append([tokens, fila, aux_col, lexema[0:len(lexema)-1], "tk_Etiqueta"])
+                            token_lista.append([tokens, fila, aux_col, lexema[0:len(lexema)-1], "tk_EtiquetaNodo"])
                             lexema = lexema[-1]
                             aux_col = columna
                             estado = 18
@@ -422,12 +389,6 @@ class AutomataLista:
                             lexema = lexema[-1]
                             aux_col = columna
                             estado = 24
-                        elif caracter == "#":
-                            tokens += 1
-                            token_lista.append([tokens, fila, aux_col, lexema[0:len(lexema)-1], "tk_parenA"])
-                            lexema = lexema[-1]
-                            aux_col = columna
-                            estado = 25
                         else:
                             errores +=1
                             error_lista.append([errores,fila,columna,"Desconocido: "+caracter])
@@ -444,7 +405,7 @@ class AutomataLista:
                     elif estado == 25:
                         if caracter == ")":
                             tokens += 1
-                            token_lista.append([tokens, fila, aux_col, lexema[0:len(lexema)-1], "tk_Etiqueta"])
+                            token_lista.append([tokens, fila, aux_col, lexema[0:len(lexema)-1], "tk_EtiquetaDefecto"])
                             lexema = lexema[-1]
                             aux_col = columna
                             estado = 26
@@ -462,12 +423,6 @@ class AutomataLista:
                             lexema = lexema[-1]
                             aux_col = columna
                             estado = 27
-                        elif caracter == "#":
-                            tokens += 1
-                            token_lista.append([tokens, fila, aux_col, lexema[0:len(lexema)-1], "tk_parenC"])
-                            lexema = lexema[-1]
-                            aux_col = columna
-                            estado = 27
                         else:
                             errores +=1
                             error_lista.append([errores,fila,columna,"Desconocido: "+caracter])
@@ -480,7 +435,7 @@ class AutomataLista:
                             estado = 27
                         elif caracter == ";":
                             tokens += 1
-                            token_lista.append([tokens, fila, aux_col, lexema[0:len(lexema)-1], "tk_Color"])
+                            token_lista.append([tokens, fila, aux_col, lexema[0:len(lexema)-1], "tk_ColorDefecto"])
                             lexema = lexema[-1]
                             aux_col = columna
                             estado = 28
@@ -495,13 +450,7 @@ class AutomataLista:
                         print("ARCHIVO CUMPLE PATRONES LÉXICOS!")
                         tokens += 1
                         token_lista.append([tokens, fila, aux_col, lexema, "tk_puntoComa"])
-                        
-                        if error_lista != [] and opcion == '1':
-                            Reportador.Reportador().error(error_lista, entrada[entrada.rfind('\\')+1:entrada.index('.')])
-                        if token_lista != [] and opcion == '1':
-                            Reportador.Reportador().tokens(token_lista, entrada[entrada.rfind('\\')+1:entrada.index('.')])
-                        file.close()
-                        return entrada
+                        lexema = ''                      
 
                 else:
                     continue
@@ -510,14 +459,25 @@ class AutomataLista:
 
             # if error_lista != [] and opcion == '1':
             #     Reportador.Reportador().error(error_lista, entrada[entrada.rfind('\\')+1:entrada.index('.')])
-            # if token_lista != [] and opcion == '1':
-            #     Reportador.Reportador().tokens(token_lista, entrada[entrada.rfind('\\')+1:entrada.index('.')])
+            if token_lista != [] and opcion == '1':
+                # Reportador.Reportador().tokens(token_lista, entrada[entrada.rfind('\\')+1:entrada.index('.')])
+                Reportador.Reportador().tks(self.Pasar_tokens(token_lista), entrada[entrada.rfind('\\')+1:entrada.index('.')])
+
             
-            # if opcion == '2' or opcion == '4':
-            #     Graficador.Graficador().mapa_sin_traza(rutas,estaciones,nombre)
+            if opcion == '2' and estado == 28: #or opcion == '4':
+                # Graficadora.Graficadora().Graficar_lista(self.Pasar_tokens(token_lista), entrada[entrada.rfind('\\')+1:entrada.index('.')])
+                print(self.Pasar_tokens(token_lista))
             
-            # file.close()
-            # return entrada
+            file.close()
+            return entrada
 
         except FileNotFoundError:
             return False
+    
+
+    def Pasar_tokens(self, lista):
+        nueva = []
+        for i in range(len(lista)):
+            nueva.append([lista[i][4].replace(',',''),lista[i][3].replace(',',''),lista[i][1]])
+        return nueva
+

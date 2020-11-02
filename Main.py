@@ -41,7 +41,7 @@ class Main:
                 print("\nGenerando gráfica solicitada...")
                 time.sleep(1.5)
                 AutomataLista.AutomataLista().aceptar(init,opcion)
-                Main(init)
+                # Main(init)
             
             
         elif opcion=="3":
