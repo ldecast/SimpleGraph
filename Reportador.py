@@ -3,7 +3,7 @@ import csv
 class Reportador:
 
     def error(self, datos, nombre):
-        errores = ["No.","Fila","Columna","Caracter","Descripcion"]
+        errores = ["No.","Línea","Columna","Descripcion"]
         datos.insert(0,errores)
         ruta = 'ERRORES '+ nombre +'.csv'
         csv_file = open(ruta, 'w', newline='', encoding="utf-8-sig")
@@ -14,7 +14,7 @@ class Reportador:
 
 
     def tokens(self, datos, nombre):
-        encabezado = ["No.","Lexema","Fila","Columna","Token"]
+        encabezado = ["No.","Línea","Columna","Lexema","Token"]
         datos.insert(0,encabezado)
         ruta = 'TOKENS '+ nombre +'.csv'
         csv_file = open(ruta, 'w', newline='', encoding="utf-8-sig")

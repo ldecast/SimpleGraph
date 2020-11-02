@@ -22,7 +22,7 @@ class Main:
             # fichero = input("Ingrese la ruta del archivo '.txt'----> ")
             print("\nLeyendo: ---"+fichero+"---\n")
             time.sleep(1.5)
-            aceptacion = AutomataLista.AutomataLista().aceptar(fichero)
+            aceptacion = AutomataLista.AutomataLista().aceptar(fichero,opcion)
             if aceptacion == False:
                 print("El archivo seleccionado no se encuentra. Intente de nuevo.")
                 input("Presione Enter para continuar...")
@@ -40,7 +40,7 @@ class Main:
                 print("\n")
                 print("\nGenerando gráfica solicitada...")
                 time.sleep(1.5)
-                AutomataLista.AutomataLista().aceptar(init)
+                AutomataLista.AutomataLista().aceptar(init,opcion)
                 Main(init)
             
             
