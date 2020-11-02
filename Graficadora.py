@@ -111,29 +111,22 @@ class Graficadora:
         for i in range(len(lista_tokens)):
             for j in range(len(lista_tokens[i])):
                 if tipo == "nodo":
-                    if token in lista_tokens[i][j]:
-                        if lista_tokens[i-1][0] != "tk_Num":
-                            a.append([lista_tokens[i][1],str(lista_tokens[i][2])])
-                elif tipo == "nodos":
-                    if token in lista_tokens[i][j]:
-                        if lista_tokens[i-1][0] == "tk_Num":
-                            a.append([lista_tokens[i][1],str(lista_tokens[i][2])])
+                    if token == lista_tokens[i][j]:
+                        a.append(lista_tokens[i][1])
                 elif tipo == "colorNodo":
-                    if token in lista_tokens[i][j]:
-                        if lista_tokens[i-4][0] == "pr_Nodo":
-                            a.append([lista_tokens[i][1],str(lista_tokens[i][2])])
-                elif tipo == "colorNodos":
-                    if token in lista_tokens[i][j]:
-                        if lista_tokens[i-5][0] == "pr_Nodos":
-                            a.append([lista_tokens[i][1],str(lista_tokens[i][2])])
+                    if token == lista_tokens[i][j]:
+                        a.append(lista_tokens[i][1])
         return a
     
     def get_lista(self, lista_tokens, token):
         a = []
         for i in range(len(lista_tokens)):
             for j in range(len(lista_tokens[i])):
-                if token in lista_tokens[i][j]:
-                    a.append(int(lista_tokens[i][j+1]))
+                if token == lista_tokens[i][j]:
+                    if lista_tokens[i-1][0] == "tk_Num":
+                        a.append(int(lista_tokens[i-1][1]))
+                    else:
+                        a.append(1)
         return a
 
     def Graficar_lista(self, lista_tokens, name):
@@ -144,11 +137,9 @@ class Graficadora:
             lista_doble = self.get_lexema(lista_tokens,'tk_Boolean')
             etiquetaDefecto = self.get_lexema(lista_tokens,'tk_EtiquetaDefecto')
             colorDefecto = self.get_lexema(lista_tokens,'tk_ColorDefecto')
-            nodo = self.get_node(lista_tokens,'tk_EtiquetaNodo',"nodo")
-            indices = self.get_lista(lista_tokens,'tk_Num')
-            nodos = self.get_node(lista_tokens,'tk_EtiquetaNodo',"nodos")
-            colorNodo = self.get_node(lista_tokens,'tk_Color',"colorNodo")
-            coloresNodos = self.get_node(lista_tokens,'tk_Color',"colorNodos")
+            nodos = self.get_node(lista_tokens,'tk_EtiquetaNodo',"nodo")
+            indices = self.get_lista(lista_tokens,'tk_EtiquetaNodo')
+            coloresNodos = self.get_node(lista_tokens,'tk_Color',"colorNodo")
 
             directorio = str("Grafo [" + name + "]")+'.dot'
             grafo = open(directorio,'w',encoding="utf8")
@@ -161,24 +152,6 @@ class Graficadora:
             grafo.write("edge[fontname=\"Sans-Serif\"];\n")
 
             index = 0
-            for i in range(len(nodo)):
-                for j in range(len(nodo[i])):
-                    label = ""
-                    color = ""
-                    if nodo[i][j] == "#":
-                        label = etiquetaDefecto
-                    else:
-                        label = nodo[i][j]
-                    
-                    if colorNodo[i] == "#":
-                        color = colorDefecto
-                    else:
-                        color = colorNodo[i]
-                    
-                    grafo.write(str(index) + "[label= \""+label.replace("'",'')+"\" fillcolor=\""+self.convert_hexadecimal(color.lower())+"\"];\n")
-                    index +=1
-            
-            numero = 1
             for i in range(len(nodos)):
                 label = ""
                 color = ""
@@ -191,12 +164,16 @@ class Graficadora:
                     color = colorDefecto
                 else:
                     color = coloresNodos[i]
-
-                for j in range(len(indices)):
-                    for k in range(indices[j]):
+                
+                if indices[i] == 1:
+                    grafo.write(str(index) + "[label= \""+label.replace("'",'')+"\" fillcolor=\""+self.convert_hexadecimal(color.lower())+"\"];\n")
+                    index +=1
+                else:
+                    numero = 1
+                    for j in range(indices[i]):
                         grafo.write(str(index) + "[label= \""+label.replace("'",'')+" "+str(numero)+"\" fillcolor=\""+self.convert_hexadecimal(color.lower())+"\"];\n")
-                        index +=1
                         numero +=1
+                        index +=1
 
             for i in range(index-1):
                 if lista_doble.lower() == "falso":

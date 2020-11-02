@@ -433,6 +433,8 @@ class AutomataLista:
                     elif estado == 27:
                         if ord(caracter) >= 65 and ord(caracter) <= 122:#es letra
                             estado = 27
+                        elif ord(caracter) >= 48 and ord(caracter) <=57:#es digito
+                            estado = 27
                         elif caracter == ";":
                             tokens += 1
                             token_lista.append([tokens, fila, aux_col, lexema[0:len(lexema)-1], "tk_ColorDefecto"])
@@ -447,26 +449,26 @@ class AutomataLista:
                             continue
                     
                     if estado == 28:
-                        print("ARCHIVO CUMPLE PATRONES LÉXICOS!")
+                        print("ANÁLISIS LÉXICO COMPLETADO!")
                         tokens += 1
                         token_lista.append([tokens, fila, aux_col, lexema, "tk_puntoComa"])
-                        lexema = ''                      
+                        lexema = ''
 
                 else:
                     continue
             
             # print(token_lista)
 
-            # if error_lista != [] and opcion == '1':
-            #     Reportador.Reportador().error(error_lista, entrada[entrada.rfind('\\')+1:entrada.index('.')])
+            if error_lista != [] and opcion == '1':
+                Reportador.Reportador().error(error_lista, entrada[entrada.rfind('\\')+1:entrada.index('.')])
             if token_lista != [] and opcion == '1':
-                # Reportador.Reportador().tokens(token_lista, entrada[entrada.rfind('\\')+1:entrada.index('.')])
+                Reportador.Reportador().tokens(token_lista, entrada[entrada.rfind('\\')+1:entrada.index('.')])
                 Reportador.Reportador().tks(self.Pasar_tokens(token_lista), entrada[entrada.rfind('\\')+1:entrada.index('.')])
 
             
-            if opcion == '2' and estado == 28: #or opcion == '4':
-                # Graficadora.Graficadora().Graficar_lista(self.Pasar_tokens(token_lista), entrada[entrada.rfind('\\')+1:entrada.index('.')])
-                print(self.Pasar_tokens(token_lista))
+            if opcion == '2' and estado == 28:
+                Graficadora.Graficadora().Graficar_lista(self.Pasar_tokens(token_lista), entrada[entrada.rfind('\\')+1:entrada.index('.')])
+                # print(self.Pasar_tokens(token_lista))
             
             file.close()
             return entrada
@@ -478,6 +480,6 @@ class AutomataLista:
     def Pasar_tokens(self, lista):
         nueva = []
         for i in range(len(lista)):
-            nueva.append([lista[i][4].replace(',',''),lista[i][3].replace(',',''),lista[i][1]])
+            nueva.append([lista[i][4].replace(',',''),lista[i][3].replace(',','')])
         return nueva
 
