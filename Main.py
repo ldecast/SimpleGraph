@@ -1,4 +1,5 @@
 import AutomataLista
+import AutomataMatriz
 import time
 
 class Main:
@@ -17,12 +18,12 @@ class Main:
     
     def inicio(self,opcion,init):
         fichero = init
-        fichero = "C:\\Users\\luisd\\Desktop\\lista1.lfp"
+        fichero = "C:\\Users\\luisd\\Desktop\\matriz.lfp"
         if opcion=="1":
             # fichero = input("Ingrese la ruta del archivo '.txt'----> ")
             print("\nLeyendo: ---"+fichero+"---\n")
-            time.sleep(1.5)
-            aceptacion = AutomataLista.AutomataLista().aceptar(fichero,opcion)
+            # time.sleep(1.5)
+            aceptacion = AutomataMatriz.AutomataMatriz().aceptar(fichero,opcion)
             if aceptacion == False:
                 print("El archivo seleccionado no se encuentra. Intente de nuevo.")
                 input("Presione Enter para continuar...")
@@ -39,8 +40,8 @@ class Main:
             else:
                 print("\n")
                 print("\nGenerando gráfica solicitada...")
-                time.sleep(1.5)
-                AutomataLista.AutomataLista().aceptar(init,opcion)
+                # time.sleep(1.5)
+                AutomataMatriz.AutomataMatriz().aceptar(init,opcion)
                 Main(init)
             
             
