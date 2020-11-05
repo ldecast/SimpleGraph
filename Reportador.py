@@ -24,7 +24,6 @@ class Reportador:
         print("Reporte de tokens generado!")
     
 
-
     #####
     def tks(self, datos, nombre):
         encabezado = ["Token","Lexema"]

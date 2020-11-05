@@ -1,5 +1,6 @@
 import os
 import Gramatica
+import Web
 class Graficadora:
 
     def get_lexema(self,lista_tokens,token):
@@ -20,6 +21,22 @@ class Graficadora:
                 elif tipo == "colorNodo":
                     if token == lista_tokens[i][j]:
                         a.append(lista_tokens[i][1])
+                elif tipo == "filaNodo":
+                    if token == lista_tokens[i][j]:
+                        if lista_tokens[i-4][0] != "pr_Nodo":
+                            a.append(lista_tokens[i][1])
+                elif tipo == "filaColor":
+                    if token == lista_tokens[i][j]:
+                        if lista_tokens[i-6][0] != "pr_Nodo":
+                            a.append(lista_tokens[i][1])
+                elif tipo == "NodoS":
+                    if token == lista_tokens[i][j]:
+                        if lista_tokens[i-1][0] == "tk_Y":
+                            a.append(lista_tokens[i][1])
+                elif tipo == "ColorNodoS":
+                    if token == lista_tokens[i][j]:
+                        if lista_tokens[i-3][0] == "tk_Y":
+                            a.append(lista_tokens[i][1])
         return a
     
     def get_lista(self, lista_tokens, token):
@@ -45,7 +62,7 @@ class Graficadora:
             indices = self.get_lista(lista_tokens,'tk_EtiquetaNodo')
             coloresNodos = self.get_node(lista_tokens,'tk_Color',"colorNodo")
 
-            directorio = str("Grafo [" + name + "]")+'.dot'
+            directorio = str(name)+'.dot'
             grafo = open(directorio,'w',encoding="utf8")
             grafo.write('digraph D {\n')
             grafo.write("rankdir=\"LR\";\n")
@@ -88,11 +105,8 @@ class Graficadora:
 
             grafo.write('}')
             grafo.close()
-
-            pre = directorio[:directorio.index('.dot')]
-            os.system('dot -Tpdf \"'+directorio+'\" -o \"'+pre+'.pdf\"')
-            os.startfile('\"'+pre+'.pdf\"')
             input("Gráfica generada! Presione Enter para continuar...")
+            Web.Web().lista_html(directorio)
     
 
     def Graficar_matriz(self, lista_tokens, name):
@@ -103,16 +117,16 @@ class Graficadora:
             doble_enlace = self.get_lexema(lista_tokens,'tk_Boolean')
             etiquetaDefecto = self.get_lexema(lista_tokens,'tk_EtiquetaDefecto')
             colorDefecto = self.get_lexema(lista_tokens,'tk_ColorDefecto')
-            # nodos = self.get_node(lista_tokens,'tk_EtiquetaNodo',"nodo")
-            # indices = self.get_lista(lista_tokens,'tk_EtiquetaNodo')
-            # coloresNodos = self.get_node(lista_tokens,'tk_Color',"colorNodo")
+            nodosFila = self.get_node(lista_tokens,'tk_Etiqueta',"filaNodo")
+            coloresFila = self.get_node(lista_tokens,'tk_Color',"filaColor")
+            nodos = self.get_node(lista_tokens,'tk_Etiqueta',"NodoS")
+            colorNodo = self.get_node(lista_tokens,'tk_Color',"ColorNodoS")
             
             filas = int(self.get_lexema(lista_tokens,'tk_Fila'))
             columnas = int(self.get_lexema(lista_tokens,'tk_Columna'))
             dimension = filas * columnas
 
-
-            directorio = str("Grafo [" + name + "]")+'.dot'
+            directorio = str(name)+'.dot'
             grafo = open(directorio,'w',encoding="utf8")
             grafo.write('digraph D {\n')
             grafo.write("rankdir=\"LR\";\n")
@@ -124,32 +138,7 @@ class Graficadora:
 
             index = 0
             for i in range(dimension):
-                grafo.write(str(index) + "[label= \""+etiquetaDefecto.replace("'",'')+"\" fillcolor=\""+Gramatica.Gramatica().convert_hexadecimal(colorDefecto.lower())+"\"];\n")
-                index +=1
-
-            # index = 0
-            # for i in range(len(nodos)):
-            #     label = ""
-            #     color = ""
-            #     if nodos[i] == "#":
-            #         label = etiquetaDefecto
-            #     else:
-            #         label = nodos[i]
-                
-            #     if coloresNodos[i] == "#":
-            #         color = colorDefecto
-            #     else:
-            #         color = coloresNodos[i]
-                
-            #     if indices[i] == 1:
-            #         grafo.write(str(index) + "[label= \""+label.replace("'",'')+"\" fillcolor=\""+Gramatica.Gramatica().convert_hexadecimal(color.lower())+"\"];\n")
-            #         index +=1
-            #     else:
-            #         numero = 1
-            #         for j in range(indices[i]):
-            #             grafo.write(str(index) + "[label= \""+label.replace("'",'')+" "+str(numero)+"\" fillcolor=\""+Gramatica.Gramatica().convert_hexadecimal(color.lower())+"\"];\n")
-            #             numero +=1
-            #             index +=1
+                grafo.write(str(i) + "[label= \""+etiquetaDefecto.replace("'",'')+"\" fillcolor=\""+Gramatica.Gramatica().convert_hexadecimal(colorDefecto.lower())+"\"];\n")
 
             if doble_enlace.lower() == "falso":
                 aux = 0
@@ -203,13 +192,53 @@ class Graficadora:
                             aux2+=columnas
                     aux2+=columnas
 
+            
+            index2 = 1
+            nodo = ''
+            colorFila = ''
+            for j in range (len(nodosFila)):
+                if index2 > columnas:
+                    index2 = 0
+                    coloresFila.pop(0)
+                if nodosFila[j] == "#":
+                    nodo = etiquetaDefecto.replace("'",'')
+                else:
+                    nodo = nodosFila[j].replace("'",'')
+
+                if coloresFila[0] == "#":
+                    colorFila = Gramatica.Gramatica().convert_hexadecimal(colorDefecto)
+                else:
+                    colorFila = Gramatica.Gramatica().convert_hexadecimal(coloresFila[0])
+
+                grafo.write(str(index)+"[label=\""+ nodo +"\" fillcolor=\""+ colorFila +"\"];\n")
+                index += 1
+                index2 += 1
+
+            index3 = 1
+            nodo = ''
+            colorN = ''
+            for j in range (len(nodos)):
+                if index3 > 1:
+                    index3 = 0
+                    colorNodo.pop(0)
+                if nodos[j] == "#":
+                    nodo = etiquetaDefecto.replace("'",'')
+                else:
+                    nodo = nodos[j].replace("'",'')
+
+                if colorNodo[0] == "#":
+                    colorN = Gramatica.Gramatica().convert_hexadecimal(colorDefecto)
+                else:
+                    colorN = Gramatica.Gramatica().convert_hexadecimal(colorNodo[0])
+
+                grafo.write(str(index)+"[label=\""+ nodo +"\" fillcolor=\""+ colorN +"\"];\n")
+                index += 1
+                index3 += 1
 
             grafo.write('}')
             grafo.close()
-
-            pre = directorio[:directorio.index('.dot')]
-            os.system('dot -Tpdf \"'+directorio+'\" -o \"'+pre+'.pdf\"')
-            os.startfile('\"'+pre+'.pdf\"')
+            
             input("Gráfica generada! Presione Enter para continuar...")
+            Web.Web().matriz_html(directorio)
     
 

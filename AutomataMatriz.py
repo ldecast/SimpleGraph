@@ -567,7 +567,7 @@ class AutomataMatriz:
                 # Reportador.Reportador().tks(self.Pasar_tokens(token_lista), entrada[entrada.rfind('\\')+1:entrada.index('.')])
 
             
-            if opcion == '2' and estado == 33:
+            if opcion == '3' and estado == 33:
                 Graficadora.Graficadora().Graficar_matriz(self.Pasar_tokens(token_lista), entrada[entrada.rfind('\\')+1:entrada.index('.')])
                 print(self.Pasar_tokens(token_lista))
             
