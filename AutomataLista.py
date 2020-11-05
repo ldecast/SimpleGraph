@@ -459,10 +459,10 @@ class AutomataLista:
             
             # print(token_lista)
 
-            # if error_lista != [] and opcion == '1':
-            #     Reportador.Reportador().error(error_lista, entrada[entrada.rfind('\\')+1:entrada.index('.')])
-            # if token_lista != [] and opcion == '1':
-            #     Reportador.Reportador().tokens(token_lista, entrada[entrada.rfind('\\')+1:entrada.index('.')])
+            if error_lista != [] and opcion == '1':
+                Reportador.Reportador().error(error_lista, entrada[entrada.rfind('\\')+1:entrada.index('.')])
+            if token_lista != [] and opcion == '1':
+                Reportador.Reportador().tokens(token_lista, entrada[entrada.rfind('\\')+1:entrada.index('.')])
                 # Reportador.Reportador().tks(self.Pasar_tokens(token_lista), entrada[entrada.rfind('\\')+1:entrada.index('.')])
 
             

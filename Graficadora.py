@@ -50,6 +50,8 @@ class Graficadora:
                         a.append(1)
         return a
 
+    
+    
     def Graficar_lista(self, lista_tokens, name):
 
         if Gramatica.Gramatica().Revisar_Gramatica(lista_tokens) == True:
@@ -102,12 +104,12 @@ class Graficadora:
                 elif lista_doble.lower() == "verdadero":
                     grafo.write(str(i)+"->"+str(i+1)+"->"+str(i)+"\n")
 
-
             grafo.write('}')
             grafo.close()
-            input("Gráfica generada! Presione Enter para continuar...")
+
             Web.Web().lista_html(directorio)
     
+
 
     def Graficar_matriz(self, lista_tokens, name):
 
@@ -238,7 +240,6 @@ class Graficadora:
             grafo.write('}')
             grafo.close()
             
-            input("Gráfica generada! Presione Enter para continuar...")
             Web.Web().matriz_html(directorio)
+            
     
-

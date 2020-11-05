@@ -560,14 +560,14 @@ class AutomataMatriz:
                 else:
                     continue
             
-            # if error_lista != [] and opcion == '1':
-            #     Reportador.Reportador().error(error_lista, entrada[entrada.rfind('\\')+1:entrada.index('.')])
-            # if token_lista != [] and opcion == '1':
-            #     Reportador.Reportador().tokens(token_lista, entrada[entrada.rfind('\\')+1:entrada.index('.')])
+            if error_lista != [] and opcion == '3':
+                Reportador.Reportador().error(error_lista, entrada[entrada.rfind('\\')+1:entrada.index('.')])
+            if token_lista != [] and opcion == '3':
+                Reportador.Reportador().tokens(token_lista, entrada[entrada.rfind('\\')+1:entrada.index('.')])
                 # Reportador.Reportador().tks(self.Pasar_tokens(token_lista), entrada[entrada.rfind('\\')+1:entrada.index('.')])
 
             
-            if opcion == '3' and estado == 33:
+            if opcion == '4' and estado == 33:
                 Graficadora.Graficadora().Graficar_matriz(self.Pasar_tokens(token_lista), entrada[entrada.rfind('\\')+1:entrada.index('.')])
                 print(self.Pasar_tokens(token_lista))
             

@@ -9,7 +9,6 @@ class Web:
         os.system('dot -Tsvg \"'+grafo+'\" -o \"'+pre+'.svg\"')
 
         f  = open(pre+'.html','w')
-        print(pre)
         contenido = """<!doctype html>
 <html lang="en">
   <head>
@@ -28,7 +27,7 @@ class Web:
     <h1 class="display-4 my-4"><b>Proyecto #2</b></h1>
     </div>
 
-        div class="row text-center">
+        <div class="row text-center">
             <div class="col-12 text-center">
                 <h2 class="pt-5 pb-4 " >Lista generada:</h2>
                 <img class="border rounded" src=\""""+ pre +""".svg">
@@ -46,8 +45,11 @@ class Web:
 
         f.write(contenido)
         f.close()
-
         webbrowser.open_new_tab(pre+'.html')
+        
+        input("Gráfica generada! Presione Enter para continuar...")
+
+
 
 
     def matriz_html(self, grafo):
@@ -56,7 +58,6 @@ class Web:
         os.system('dot -Tsvg \"'+grafo+'\" -o \"'+pre+'.svg\"')
 
         f  = open(pre+'.html','w')
-        print(pre)
         contenido = """<!doctype html>
 <html lang="en">
   <head>
@@ -75,7 +76,7 @@ class Web:
     <h1 class="display-4 my-4"><b>Proyecto #2</b></h1>
     </div>
 
-        div class="row text-center">
+        <div class="row text-center">
             <div class="col-12 text-center">
                 <h2 class="pt-5 pb-4 " >Lista generada:</h2>
                 <img class="border rounded" src=\""""+ pre +""".svg">
@@ -93,7 +94,6 @@ class Web:
 
         f.write(contenido)
         f.close()
-
         webbrowser.open_new_tab(pre+'.html')
-
-    
+        
+        input("Matriz generada! Presione Enter para continuar...")

@@ -1,6 +1,7 @@
 __pycache__/
 a.py
 *.txt
+*.lfp
 *.csv
 *.dot
 *.pdf
